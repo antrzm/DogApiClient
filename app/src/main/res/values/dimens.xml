@@ -4,4 +4,6 @@
     <dimen name="offset_8dp">8dp</dimen>
     <dimen name="offset_16dp">16dp</dimen>
     <dimen name="offset_32dp">32dp</dimen>
+
+    <dimen name="avatar_sz">80</dimen>
 </resources>

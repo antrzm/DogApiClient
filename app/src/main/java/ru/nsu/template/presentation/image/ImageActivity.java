@@ -16,6 +16,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.nsu.template.R;
 import ru.nsu.template.presentation.list.ListActivity;
 import ru.nsu.template.presentation.start.StartActivity;
@@ -71,10 +75,10 @@ public class ImageActivity extends AppCompatActivity {
         });
 
         viewModel.observeSubBreedLiveData().observe(
-                this, new Observer<String[]>() {
+                this, new Observer<List<String>>() {
                     @Override
-                    public void onChanged(String[] subBreeds) {
-                        if (subBreeds != null && subBreeds.length > 0) {
+                    public void onChanged(List<String> subBreeds) {
+                        if (subBreeds != null && subBreeds.size() > 0) {
                             bList.setEnabled(true);
                         }
                     }
@@ -91,9 +95,9 @@ public class ImageActivity extends AppCompatActivity {
 
     }
 
-    private void openList(String[] subBreeds) {
+    private void openList(ArrayList<String> subBreeds) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ListActivity.LIST_KEY, subBreeds);
+        bundle.putStringArrayList(ListActivity.LIST_KEY, subBreeds);
 
         Intent intent = new Intent(ImageActivity.this, ListActivity.class);
         intent.putExtras(bundle);

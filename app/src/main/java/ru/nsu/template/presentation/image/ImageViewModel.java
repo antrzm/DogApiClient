@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.lang.reflect.Array;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -22,11 +25,11 @@ public class ImageViewModel extends ViewModel {
 
     private MutableLiveData<String> errorLiveData = new MutableLiveData<>("");
 
-    public LiveData<String[]> observeSubBreedLiveData() {
+    public LiveData<ArrayList<String>> observeSubBreedLiveData() {
         return subBreedLiveData;
     }
 
-    private MutableLiveData<String[]> subBreedLiveData = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<String>> subBreedLiveData = new MutableLiveData<>();
 
     private DogApi api;
 
@@ -39,14 +42,13 @@ public class ImageViewModel extends ViewModel {
             String[] split = breedName.split("-");
             breedName = split[0];
         }
-        //TODO: split by - and get first
         api.getSubBreeds(breedName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<BreedModel>() {
                     @Override
                     public void onSuccess(BreedModel breed) {
-                        subBreedLiveData.setValue(breed.getMessage());
+                        subBreedLiveData.setValue((ArrayList<String>) breed.getMessage());
                     }
 
                     @Override
