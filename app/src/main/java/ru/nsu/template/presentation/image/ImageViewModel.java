@@ -1,7 +1,5 @@
 package ru.nsu.template.presentation.image;
 
-import android.os.Build;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,7 +8,6 @@ import java.lang.reflect.Array;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -40,34 +37,30 @@ public class ImageViewModel extends ViewModel {
         api = DogApiClient.getClient(TemplateApplication.getInstance()).create(DogApi.class);
     }
 
-    void searchSubBreedList(String breed) {
-        if (breed.contains("-")) {
-            final String[] breedName = breed.split("-");
-            api.getSubBreeds(breedName[0])
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableSingleObserver<BreedModel>() {
-                        @Override
-                        public void onSuccess(BreedModel breed) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                List<String> collect = breed.getMessage().stream()
-                                        .map(i -> i = breedName[0] + "-" + i)
-                                        .collect(Collectors.toList());
-                                subBreedLiveData.setValue((ArrayList<String>) collect);
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            if (e instanceof UnknownHostException) {
-                                errorLiveData.setValue("No internet connection");
-                            } else {
-                                errorLiveData.setValue("Couldn't find dog");
-                            }
-                        }
-
-                    });
+    void searchSubBreedList(String breedName) {
+        if (breedName.contains("-")) {
+            String[] split = breedName.split("-");
+            breedName = split[0];
         }
+        api.getSubBreeds(breedName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<BreedModel>() {
+                    @Override
+                    public void onSuccess(BreedModel breed) {
+                        subBreedLiveData.setValue((ArrayList<String>) breed.getMessage());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof UnknownHostException) {
+                            errorLiveData.setValue("No internet connection");
+                        } else {
+                            errorLiveData.setValue("Couldn't find dog");
+                        }
+                    }
+
+                });
     }
 
 }

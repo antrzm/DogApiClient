@@ -40,7 +40,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         holder.itemView.setOnClickListener(v -> {
             if (listActivity != null) {
-                listActivity.openOnClick(breed);
+                listActivity.openOnClick(String.valueOf(listActivity.getTvBreedName().getText()), breed);
             }
         });
     }

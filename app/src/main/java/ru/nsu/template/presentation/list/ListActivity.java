@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.net.URI;
 import java.util.List;
 
 import ru.nsu.template.R;
@@ -52,24 +54,29 @@ public class ListActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this,
                 new ListViewModelFactory(breedList)).get(ListViewModel.class);
 
-        viewModel.observeBreedsLiveData().observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-                adapter.setItems(breedList);
-            }
-        });
+        viewModel.observeBreedsLiveData().observe(this, strings -> adapter.setItems(breedList));
 
         if (breed != null) {
             tvBreedName.setText(breed);
         }
     }
 
-    public void openOnClick(String breed) {
-        Intent intent = new Intent(ListActivity.this, ImageActivity.class);
-        intent.putExtra(BREED_KEY, breed);
-//        intent.putExtra(IMAGE_KEY, uri);
+    public TextView getTvBreedName() {
+        return tvBreedName;
+    }
 
-        startActivity(intent);
+    public void openOnClick(String breed, String subBreed) {
+        Intent intent = new Intent(ListActivity.this, ImageActivity.class);
+        intent.putExtra(ImageActivity.IMAGE_NAME_KEY, breed+"-"+subBreed);
+        viewModel.getImageUrl(breed, subBreed);
+
+        viewModel.observeUriLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String uri) {
+                intent.putExtra(IMAGE_KEY, uri);
+                startActivity(intent);
+            }
+        });
     }
 
 }

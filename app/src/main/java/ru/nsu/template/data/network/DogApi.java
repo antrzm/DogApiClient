@@ -17,4 +17,7 @@ public interface DogApi {
     @GET("breed/{breedName}/list")
     Single<BreedModel> getSubBreeds(@Path("breedName") String breedName);
 
+    @GET("breed/{breedName}/{subBreed}/images/random")
+    Single<ImageModel> getSubBreedImage(@Path("breedName") String breedName, @Path("subBreed") String subBreed);
+
 }

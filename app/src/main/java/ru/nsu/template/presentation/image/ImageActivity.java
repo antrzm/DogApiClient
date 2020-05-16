@@ -12,11 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +26,6 @@ public class ImageActivity extends AppCompatActivity {
 
     public static String IMAGE_KEY = "image_key";
     public static String IMAGE_NAME_KEY = "image_name_key";
-    public static String SUB_BREED_LIST_KEY = "sub_list_key";
 
     private Button bBack;
     private Button bList;
@@ -98,6 +95,7 @@ public class ImageActivity extends AppCompatActivity {
     private void openList(ArrayList<String> subBreeds) {
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(ListActivity.LIST_KEY, subBreeds);
+        bundle.putString(ListActivity.BREED_KEY, String.valueOf(tvBreedName.getText()).split("-")[0]);
 
         Intent intent = new Intent(ImageActivity.this, ListActivity.class);
         intent.putExtras(bundle);

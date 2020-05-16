@@ -100,7 +100,6 @@ public class StartActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString(ImageActivity.IMAGE_KEY, imageUri);
         bundle.putString(ImageActivity.IMAGE_NAME_KEY, getBreedFromURI(imageUri));
-        bundle.putSerializable(ImageActivity.SUB_BREED_LIST_KEY, getBreedFromURI(imageUri));
 
         Intent intent = new Intent(StartActivity.this, ImageActivity.class);
         intent.putExtras(bundle);
