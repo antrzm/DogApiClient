@@ -9,15 +9,15 @@ import java.util.List;
 import ru.nsu.template.presentation.list.ListViewModel;
 
 public class ListViewModelFactory implements ViewModelProvider.Factory {
-    private List<String> breed;
+    private List<String> breedList;
 
-    public ListViewModelFactory(List<String> breed) {
-        this.breed = breed;
+    public ListViewModelFactory(List<String> breedList) {
+        this.breedList = breedList;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new ListViewModel(breed);
+        return (T) new ListViewModel(breedList);
     }
 }

@@ -3,7 +3,6 @@ package ru.nsu.template.presentation.list;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +16,11 @@ import ru.nsu.template.R;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     private List<String> items = Collections.emptyList();
+    private ListActivity listActivity;
+
+    public ListAdapter(ListActivity listActivity) {
+        this.listActivity = listActivity;
+    }
 
     void setItems(List<String> items) {
         this.items = items;
@@ -33,6 +37,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ListAdapter.ViewHolder holder, int position) {
         final String breed = items.get(position);
         holder.tvTitle.setText(breed);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listActivity != null) {
+                listActivity.openOnClick(breed);
+            }
+        });
     }
 
     @Override
